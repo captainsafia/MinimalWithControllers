@@ -18,6 +18,10 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 
+app.UseRouting();
+
+app.UseAuthorization();
+
 var summaries = new[]
 {
     "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
@@ -47,7 +51,7 @@ public record WeatherForecast(DateTime Date, int TemperatureC, string? Summary)
 }
 
 [ApiController]
-[Route("[controller]")]
+[Route("[controller]", Name = "WeatherForecastTwo")]
 public class WeatherForecastTwoController : ControllerBase
 {
     private static readonly string[] Summaries = new[]
@@ -62,7 +66,8 @@ public class WeatherForecastTwoController : ControllerBase
         _logger = logger;
     }
 
-    [HttpGet(Name = "GetWeatherForecast")]
+    [HttpGet(Name = "GetWeatherForecast2")]
+    [ProducesResponseType(typeof(IEnumerable<WeatherForecast>), StatusCodes.Status200OK)]
     public IEnumerable<WeatherForecast> Get()
     {
         return Enumerable.Range(1, 5).Select(index => 
